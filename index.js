@@ -22,21 +22,18 @@ function playRound(e) {
 
   
   if (humanSelection === computerSelection) {
-    ++scores.tieScore
-    console.log(`Tie! Both of you picked ${humanSelection}`)
-    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.tieScore} Ties`)
+    ++scores.tieScore;
+    updateNotif(`Tie! Both of you picked ${humanSelection}`);
   }
-  else if (humanSelection === "rock" & computerSelection === "scissors" |
-    humanSelection === "paper" & computerSelection === "rock" |
-    humanSelection === "scissors" & computerSelection === "paper") {
-    ++scores.humanScore
-    console.log(`Congrats, your ${humanSelection} beats the computer's ${computerSelection}`)
-    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.tieScore} Ties`)
+  else if (humanSelection === "rock" && computerSelection === "scissors" ||
+    humanSelection === "paper" && computerSelection === "rock" ||
+    humanSelection === "scissors" && computerSelection === "paper") {
+    ++scores.humanScore;
+    updateNotif(`Congrats, your ${humanSelection} beats the computer's ${computerSelection}`);
   }
   else {
-    ++scores.computerScore
-    console.log(`Unfortuante, your ${humanSelection} is beat by the computer's ${computerSelection}`)
-    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.tieScore} Ties`)
+    ++scores.computerScore;
+    updateNotif(`Unfortuante, your ${humanSelection} is beat by the computer's ${computerSelection}`);
   }
 
   updateScoreboard();
@@ -46,6 +43,10 @@ function updateScoreboard() {
   document.getElementById("humanScore").textContent = scores.humanScore;
   document.getElementById("computerScore").textContent = scores.computerScore;
   document.getElementById("tieScore").textContent = scores.tieScore;
+}
+
+function updateNotif(msg) {
+  document.getElementById("notifText").textContent = msg;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -64,3 +65,11 @@ function initUI() {
   paper_button.addEventListener("click", playRound);
   scissors_button.addEventListener("click", playRound);
 }
+
+/*
+  GPT Suggestion to improve:
+  ["rock", "paper", "scissors"].forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) btn.addEventListener("click", playRound);
+  });
+*/
