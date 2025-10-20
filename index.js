@@ -1,4 +1,10 @@
-let getComputerChoice = function() {
+const scores = {
+  humanScore: 0,
+  computerScore: 0,
+  tieScore: 0
+};
+
+function getComputerChoice() {
   let rand = Math.random() * 3
   switch(Math.floor(rand)) {
     case 0:
@@ -10,54 +16,51 @@ let getComputerChoice = function() {
   }
 }
 
-let getHumanChoice = function() {
-  let choice = ""
-  let flag = false
-  while (!choice | flag) {
-    choice = prompt('Please enter "Rock", "Paper", or "Scissors"', "").toLowerCase()
-    if (!(choice === "rock" | choice === "paper" | choice === "scissors")) {
-      flag = true
-    }
-    else {
-      flag = false
-    }
-  }
-  return choice
-}
-
-let playGame = function () {
-  let scores = {
-    humanScore: 0,
-    computerScore: 0,
-    ties: 0
-  }
-
-  while (true) {
-    playRound(scores)
-  }
-}
-
-let playRound = function (scores) {
-  const humanSelection = getHumanChoice();
+function playRound(e) {
+  const humanSelection = e.target.id;
   const computerSelection = getComputerChoice();
+
   
   if (humanSelection === computerSelection) {
-    ++scores.ties
+    ++scores.tieScore
     console.log(`Tie! Both of you picked ${humanSelection}`)
-    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.ties} Ties`)
+    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.tieScore} Ties`)
   }
   else if (humanSelection === "rock" & computerSelection === "scissors" |
     humanSelection === "paper" & computerSelection === "rock" |
     humanSelection === "scissors" & computerSelection === "paper") {
     ++scores.humanScore
     console.log(`Congrats, your ${humanSelection} beats the computer's ${computerSelection}`)
-    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.ties} Ties`)
+    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.tieScore} Ties`)
   }
   else {
     ++scores.computerScore
     console.log(`Unfortuante, your ${humanSelection} is beat by the computer's ${computerSelection}`)
-    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.ties} Ties`)
+    console.log(`Score: (You) ${scores.humanScore} to ${scores.computerScore} (Computer)   ${scores.tieScore} Ties`)
   }
+
+  updateScoreboard();
 }
 
-playGame()
+function updateScoreboard() {
+  document.getElementById("humanScore").textContent = scores.humanScore;
+  document.getElementById("computerScore").textContent = scores.computerScore;
+  document.getElementById("tieScore").textContent = scores.tieScore;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  (() => {
+    console.log("Initializing app...");
+    initUI();
+  })();
+});
+
+function initUI() {
+  const rock_button = document.getElementById("rock");
+  const paper_button = document.getElementById("paper");
+  const scissors_button = document.getElementById("scissors");
+
+  rock_button.addEventListener("click", playRound);
+  paper_button.addEventListener("click", playRound);
+  scissors_button.addEventListener("click", playRound);
+}
